@@ -1,0 +1,24 @@
+name: Build UWP ARM
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v6
+
+    # Universal Windows Platform
+    - name: Configure Universal Windows Platform ARM
+      run: >
+        cmake 
+        -B build
+        -G "Visual Studio 17 2022"
+        -DCMAKE_SYSTEM_NAME:String=WindowsStore
+        -DCMAKE_GENERATOR_PLATFORM="ARM,version=10.0.22621.0"
+        -DCMAKE_SYSTEM_VERSION:String="10.0"
+        -DBASISU_SSE=OFF
+    - name: Build Universal Windows Platform ARM
+      run: cmake --build build
